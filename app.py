@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mysqldb import MySQL
 from flask_mail import Mail, Message
 
-app = Flask('__name__')
+app = Flask(__name__)
 app.secret_key = 'your-secret-key'
 
 import os
@@ -22,7 +22,7 @@ app.config['MYSQL_DB'] = 'flask_users'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'HappyPaws@gmail.com'
+app.config['MAIL_USERNAME'] = 'happypaws682@gmail.com'
 app.config['MAIL_PASSWORD'] = 'HappyPaws123'
 
 mysql = MySQL(app)
@@ -65,7 +65,7 @@ def SignUpCustomer():
             cur.close()
 
             return redirect(url_for('home'))
-    return render_template('signup.html', error=error)
+    return render_template('signup_customer.html', error=error)
 
 
 @app.route('/signup/petshop', methods=['GET','POST'])
@@ -91,7 +91,7 @@ def SignUpPetshop():
             cur.close()
 
             return redirect(url_for('home'))
-    return render_template('signuppetshop.html',error=error)
+    return render_template('signup_petshop.html',error=error)
 
 
 @app.route('/signup/shelter', methods=['GET','POST'])
@@ -117,6 +117,32 @@ def SignUpShelter():
             cur.close()
 
             return redirect(url_for('home'))
-    return render_template('signupshelter.html', error=error)   
+    return render_template('signup_shelter.html', error=error)   
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        cur = mysql.connection.cursor()
+        cur.execute(f"SELECT * FROM tbl_users WHERE email = '{email}' AND password = '{password}'")
+        user = cur.fetchone()
+        cur.close()
+        if user:
+            session['username'] = user['username']  # Store username in session
+            flash('Logged in successfully!', 'success')
+            return redirect(url_for('home'))
+        else:
+            error = 'Invalid email or password. Please try again.'
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)  # Remove username from session
+    flash('Logged out successfully!', 'success')
+    return redirect(url_for('home'))
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')

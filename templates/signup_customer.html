@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in - Happy Paws</title>
+    <title>Sign Up - Happy Paws</title>
     <style>
 
-        body {
-            font-family: 'Times New Roman', serif;
-            background-image: url("{{ url_for('static', filename='background.jpg') }}"); 
-            background-color: #f4f4f2; 
-            background-size: cover;
-            background-position: center; 
-            background-repeat: no-repeat;
-            color: #333;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+    body {
+                font-family: 'Times New Roman', serif;
+                background-image: url("{{ url_for('static', filename='background.jpg') }}"); 
+                background-color: #f4f4f2; 
+                background-size: cover;
+                background-position: center; 
+                background-repeat: no-repeat;
+                color: #333;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
 
         .container {
             width: 300px;
@@ -85,17 +85,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Log In</h1>
-        <form action="/login" method="post">
+        <h1>Customer Signup</h1>
+        <form action="/signup" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <button type="submit">Log in</button>
         </form>
-        <p>Don't have an account? <a href="/signup/customer">Signup</a></p>
+        <p>Already have an account? <a href="/login">Login</a></p>
     </div>
-    <!-- Back to Home button within a box -->
     <div class="back-btn-box">
         <a href="/" style="display: inline-block; background-color: #846148; color: white; padding: 10px 15px; border-radius: 4px; text-decoration: none;">Back to Home</a>
     </div>
